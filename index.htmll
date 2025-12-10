@@ -1,99 +1,141 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Hub</title>
+import { useState } from "react";
+import { Settings, Search } from "lucide-react";
+import { motion } from "framer-motion";
 
-    <style>
-        body {
-            font-family: Arial;
-            margin: 0;
-            background: #121212;
-            color: white;
-        }
+export default function App() {
+  const [search, setSearch] = useState("");
+  const [disguiseName, setDisguiseName] = useState("Google Docs");
+  const [disguiseIcon, setDisguiseIcon] = useState("/google-docs.png");
+  const [darkMode, setDarkMode] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
-        h1 {
-            text-align: center;
-            padding: 20px;
-        }
+  const games = Array.from({ length: 20 }).map((_, i) => ({
+    title: `Game ${i + 1}`,
+    thumb: `https://via.placeholder.com/150?text=Game+${i + 1}`,
+  }));
 
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
+  return (
+    <div className={darkMode ? "bg-gray-900 text-white min-h-screen" : "bg-gray-100 text-black min-h-screen"}>
+      {/* TOP BAR */}
+      <div className="flex items-center justify-between p-4 shadow-md bg-white/10 backdrop-blur-md">
+        {/* Disguise */}
+        <div className="flex items-center gap-2">
+          <img src={disguiseIcon} alt="icon" className="w-6 h-6" />
+          <input
+            className="bg-transparent border-b border-gray-400 focus:outline-none"
+            value={disguiseName}
+            onChange={(e) => setDisguiseName(e.target.value)}
+          />
+        </div>
 
-        .game-card {
-            background: #1e1e1e;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            transition: .2s;
-        }
+        {/* CENTER LOGO */}
+        <motion.h1
+          initial={{ opacity: 0, scale: 0.7 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="absolute left-1/2 transform -translate-x-1/2 text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent drop-shadow-lg"
+        >
+          Alex's Games
+        </motion.h1>
 
-        .game-card:hover {
-            background: #272727;
-            transform: scale(1.05);
-        }
+        {/* SETTINGS BUTTON */}
+        <button onClick={() => setSettingsOpen(true)} className="p-2 hover:opacity-70">
+          <Settings />
+        </button>
+      </div>
 
-        .game-card img {
-            width: 100%;
-            height: 140px;
-            border-radius: 10px;
-            object-fit: cover;
-        }
+      {/* SEARCH BAR */}
+      <div className="flex justify-center mt-6">
+        <div className="flex items-center bg-white/20 backdrop-blur-md p-2 rounded-xl shadow w-80">
+          <Search className="mr-2" />
+          <input
+            className="bg-transparent w-full focus:outline-none"
+            placeholder="Search games..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+      </div>
 
-        .play-btn {
-            margin-top: 10px;
-            padding: 10px 14px;
-            background: #4CAF50;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            color: white;
-            font-weight: bold;
-        }
+      {/* GAMES GRID */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-6">
+        {games
+          .filter((g) => g.title.toLowerCase().includes(search.toLowerCase()))
+          .map((g, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ scale: 1.05 }}
+              className="bg-white/10 backdrop-blur-md p-3 rounded-2xl shadow cursor-pointer"
+            >
+              <img src={g.thumb} className="rounded-xl" />
+              <p className="text-center mt-2 font-semibold">{g.title}</p>
+            </motion.div>
+          ))}
+      </div>
 
-        .play-btn:hover {
-            background: #45a045;
-        }
-    </style>
-</head>
+      {/* SETTINGS POPUP */}
+      {settingsOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+          <div className="bg-white text-black p-6 rounded-3xl w-80 shadow-xl">
+            <h2 className="text-xl font-bold mb-4">Settings</h2>
 
-<body>
+            {/* Dark mode toggle */}
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="w-full p-3 bg-gray-200 rounded-xl mb-3"
+            >
+              Toggle Dark/Light Mode
+            </button>
 
-<h1>Game Hub</h1>
+            {/* Disguise options */}
+            <h3 className="font-semibold mt-2 mb-1">Page Disguiser</h3>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={() => {
+                  setDisguiseName("Google Docs");
+                  setDisguiseIcon("/google-docs.png");
+                }}
+                className="bg-gray-200 p-2 rounded-xl"
+              >
+                Docs
+              </button>
+              <button
+                onClick={() => {
+                  setDisguiseName("Google Slides");
+                  setDisguiseIcon("/google-slides.png");
+                }}
+                className="bg-gray-200 p-2 rounded-xl"
+              >
+                Slides
+              </button>
+              <button
+                onClick={() => {
+                  setDisguiseName("Google Classroom");
+                  setDisguiseIcon("/google-classroom.png");
+                }}
+                className="bg-gray-200 p-2 rounded-xl"
+              >
+                Classroom
+              </button>
+              <button
+                onClick={() => {
+                  setDisguiseName("Canvas");
+                  setDisguiseIcon("/canvas.png");
+                }}
+                className="bg-gray-200 p-2 rounded-xl"
+              >
+                Canvas
+              </button>
+            </div>
 
-<div class="game-grid">
-
-    <!-- Example Games -->
-    <div class="game-card">
-        <img src="https://i.imgur.com/7yQF5vK.png">
-        <h3>Run 3</h3>
-        <button class="play-btn" onclick="openGame('https://ubg365.github.io/run-3/')">Play</button>
+            <button
+              onClick={() => setSettingsOpen(false)}
+              className="w-full mt-4 bg-red-400 text-white p-3 rounded-xl"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
-
-    <div class="game-card">
-        <img src="https://i.imgur.com/ZQSH5Dr.png">
-        <h3>Slope</h3>
-        <button class="play-btn" onclick="openGame('https://ubg365.github.io/slope/')">Play</button>
-    </div>
-
-    <div class="game-card">
-        <img src="https://i.imgur.com/0CWf1oi.png">
-        <h3>OvO</h3>
-        <button class="play-btn" onclick="openGame('https://ovo.onl/')">Play</button>
-    </div>
-
-</div>
-
-<script>
-function openGame(url) {
-    window.open(url, "_blank");
+  );
 }
-</script>
-
-</body>
-</html>
