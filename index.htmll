@@ -1,168 +1,168 @@
-import { useState } from "react";
-import { Settings, Search } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+body {
+  overflow-x: hidden;
+  z-index: inherit !important;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
-export default function App() {
-  const [search, setSearch] = useState("");
-  const [disguiseName, setDisguiseName] = useState("Google Docs");
-  const [disguiseIcon, setDisguiseIcon] = useState("/google-docs.png");
-  const [darkMode, setDarkMode] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
+.searchforapps {
+  border: 0;
+  outline: 0;
+  border-radius: 10px;
+  color: #fff;
+  box-shadow: 0 15px 15px rgba(0, 0, 0, 0.3);
+  padding: 15px 30px 15px 30px;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  display: flex;
+  text-align: center;
+  transition: 0.7s;
+  width: 20vw;
+}
 
-  const games = Array.from({ length: 20 }).map((_, i) => ({
-    title: `Game ${i + 1}`,
-    thumb: `https://via.placeholder.com/300x200?text=Game+${i + 1}`,
-    description: "A fun mini-game to enjoy!",
-  }));
+/* Styles for screens smaller than 768px (typical for mobile devices) */
+@media only screen and (max-width: 768px) {
 
-  return (
-    <div className={darkMode ? "bg-gray-900 text-white min-h-screen transition-colors duration-300" : "bg-gray-100 text-gray-900 min-h-screen transition-colors duration-300"}>
-      
-      {/* NAVBAR */}
-      <div className={`fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-white/10 dark:bg-gray-900/20 shadow-md transition-colors duration-300`}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-          
-          {/* Left: Disguise */}
-          <div className="flex items-center gap-3">
-            <img src={disguiseIcon} alt="icon" className="w-6 h-6" />
-            <input
-              value={disguiseName}
-              onChange={(e) => setDisguiseName(e.target.value)}
-              className="bg-transparent border-b border-gray-400 focus:outline-none text-sm sm:text-base w-36 sm:w-48"
-            />
-          </div>
+  .searchforapps {
+    border: 0;
+    outline: 0;
+    border-radius: 10px;
+    color: #fff;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.3);
+    padding: 15px 30px 15px 30px;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    display: flex;
+    text-align: center;
+    transition: 0.7s;
+    width: 50vw;
+  }
 
-          {/* Center: Logo */}
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent drop-shadow-lg"
-          >
-            Alex's Games
-          </motion.h1>
+  .searchforapps:active {
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.7);
+    width: 100vw;
+  }
 
-          {/* Right: Settings */}
-          <button
-            onClick={() => setSettingsOpen(true)}
-            className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
-          >
-            <Settings className="w-6 h-6" />
-          </button>
-        </div>
 
-        {/* Search Bar Below Navbar */}
-        <div className="flex justify-center py-3 px-6">
-          <div className="flex items-center w-full max-w-md bg-white/20 dark:bg-gray-800/30 backdrop-blur-md p-3 rounded-xl shadow-md transition-colors duration-300">
-            <Search className="w-5 h-5 mr-2" />
-            <input
-              placeholder="Search games..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="bg-transparent w-full focus:outline-none text-sm sm:text-base"
-            />
-          </div>
-        </div>
-      </div>
+  .searchforapps:focus {
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.7);
+    width: 100vw;
+  }
+}
 
-      {/* Spacer for fixed navbar */}
-      <div className="h-40"></div>
 
-      {/* GAMES GRID */}
-      <div className="max-w-7xl mx-auto px-6 pb-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {games
-          .filter((g) => g.title.toLowerCase().includes(search.toLowerCase()))
-          .map((g, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ scale: 1.05 }}
-              className="bg-white/20 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl shadow-md overflow-hidden cursor-pointer transition-transform duration-200"
-            >
-              <img src={g.thumb} alt={g.title} className="w-full h-40 object-cover" />
-              <div className="p-4">
-                <h3 className="font-semibold text-lg mb-1">{g.title}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{g.description}</p>
-              </div>
-            </motion.div>
-          ))}
-      </div>
+.searchforapps:active,
+.searchforapps:focus {
+  /* height: 10vh; */
+  /* font-size: 20px; */
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.7);
+  width: 30vw;
+}
 
-      {/* SETTINGS MODAL */}
-      <AnimatePresence>
-        {settingsOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-          >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-3xl w-11/12 sm:w-96 p-6 shadow-xl"
-            >
-              <h2 className="text-xl font-bold mb-4">Settings</h2>
+.app-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 10px;
+  min-height: 210px;
+  background-color: rgba(255, 255, 255, 0.108);
+  width: auto;
+  max-width: 300px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.4);
+  transition: 0.7s;
+}
 
-              {/* Dark Mode Toggle */}
-              <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="w-full p-3 rounded-xl bg-gray-200 dark:bg-gray-700 mb-4 hover:opacity-80 transition-opacity duration-200"
-              >
-                Toggle Dark/Light Mode
-              </button>
+.app-list {
+  display: flex;
+  color: #fff;
+  flex-wrap: wrap;
+  gap: 30px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 
-              {/* Disguise Options */}
-              <h3 className="font-semibold mb-2">Page Disguiser</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  onClick={() => {
-                    setDisguiseName("Google Docs");
-                    setDisguiseIcon("/google-docs.png");
-                  }}
-                  className="p-2 rounded-xl bg-gray-200 dark:bg-gray-700 hover:opacity-80 transition-opacity duration-200"
-                >
-                  Docs
-                </button>
-                <button
-                  onClick={() => {
-                    setDisguiseName("Google Slides");
-                    setDisguiseIcon("/google-slides.png");
-                  }}
-                  className="p-2 rounded-xl bg-gray-200 dark:bg-gray-700 hover:opacity-80 transition-opacity duration-200"
-                >
-                  Slides
-                </button>
-                <button
-                  onClick={() => {
-                    setDisguiseName("Google Classroom");
-                    setDisguiseIcon("/google-classroom.png");
-                  }}
-                  className="p-2 rounded-xl bg-gray-200 dark:bg-gray-700 hover:opacity-80 transition-opacity duration-200"
-                >
-                  Classroom
-                </button>
-                <button
-                  onClick={() => {
-                    setDisguiseName("Canvas");
-                    setDisguiseIcon("/canvas.png");
-                  }}
-                  className="p-2 rounded-xl bg-gray-200 dark:bg-gray-700 hover:opacity-80 transition-opacity duration-200"
-                >
-                  Canvas
-                </button>
-              </div>
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-              {/* Close Button */}
-              <button
-                onClick={() => setSettingsOpen(false)}
-                className="w-full mt-6 p-3 rounded-xl bg-red-500 text-white hover:opacity-80 transition-opacity duration-200"
-              >
-                Close
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
+.app-image {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  object-fit: cover;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  transition: 0.3s !important;
+  text-align: center;
+  height: 150px;
+  width: 270px;
+  border-radius: 3px !important;
+}
+
+.app-card:hover .app-image {
+  box-shadow: 3px 10px 10px rgba(0, 0, 0, 0.477);
+}
+
+.app-card:hover {
+  background: linear-gradient(to top right, rgb(115, 11, 14), rgb(10, 23, 87)) !important;
+  background-size: 400% 400%;
+  animation: gradient 5s ease infinite;
+}
+
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+#launchgame {
+
+  margin-top: auto;
+
+}
+
+
+
+
+
+
+/* .gms-title {
+  font-size: 4vh;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow:elipsis !important;
+} */
+
+.gms-title {
+  font-size: 4vh;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+
+.game-tags-color-switch {
+  color: #fff !important;
 }
